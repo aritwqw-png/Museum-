@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="uk"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Музей Академічних Гріхів</title>
+<style>
+:root{--bg:#07070f;--ink:#e9ecff;--mute:#8e93b8;--blue:#3ec5ff;--red:#ff3d7f;--vio:#9b5cff;--ok:#38f2a0;--c:var(--blue);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{color-scheme:dark;background:#07070f}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at 50% 0,color-mix(in srgb,var(--c) 22%,#07070f),#07070f 70%);color:var(--ink);font:16px/1.5 system-ui,-apple-system,sans-serif;min-height:100vh;transition:background 1.2s}
+body.red{--c:var(--vio)}
+.wrap{max-width:640px;margin:0 auto;padding:18px 16px 50px}
+.hud{display:flex;justify-content:space-between;font:700 13px ui-monospace,monospace;color:var(--mute);padding-bottom:8px}
+.karma{color:var(--ok)}
+.room{display:none;animation:in .6s}.room.on{display:block}
+@keyframes in{from{opacity:0;transform:scale(.96)}}
+h1{font-size:clamp(34px,10vw,56px);line-height:1.02;margin:10px 0;letter-spacing:-.02em;text-shadow:0 0 24px var(--c)}
+h2{font-size:26px;margin:4px 0 6px;text-shadow:0 0 16px var(--c)}
+.mute{color:var(--mute)}
+.portal{width:min(70vw,260px);aspect-ratio:3/4;margin:26px auto;border-radius:130px 130px 6px 6px;border:3px solid var(--blue);box-shadow:0 0 40px var(--blue),inset 0 0 60px var(--blue);background:radial-gradient(ellipse,#bff0ff,#1b6fb0 60%,#07070f);animation:pulse 2.4s infinite alternate}
+@keyframes pulse{to{box-shadow:0 0 70px var(--blue),inset 0 0 90px var(--blue)}}
+.portal.go{animation:fly 1.4s forwards}
+@keyframes fly{to{transform:scale(9);opacity:0;border-color:var(--red)}}
+.scan{font:13px ui-monospace,monospace;color:var(--blue);text-align:center;min-height:20px}
+.btn{font:700 16px system-ui;border:2px solid var(--c);background:transparent;color:var(--ink);padding:13px 18px;border-radius:12px;cursor:pointer;box-shadow:0 0 14px color-mix(in srgb,var(--c) 50%,transparent);width:100%;margin-top:10px}
+.btn:active{transform:scale(.98)}
+.btn.ghost{border-color:var(--ok);box-shadow:0 0 14px color-mix(in srgb,var(--ok) 40%,transparent)}
+.btn.bad{border-color:var(--red);box-shadow:0 0 14px color-mix(in srgb,var(--red) 50%,transparent)}
+button:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.holo{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
+.fig{aspect-ratio:1;border-radius:12px;border:1.5px dashed var(--blue);background:color-mix(in srgb,var(--blue) 8%,transparent);opacity:.55;font-size:34px;display:grid;place-items:center;cursor:pointer;animation:fl 3s infinite alternate;color:var(--ink)}
+.fig:nth-child(2){animation-delay:.6s}.fig:nth-child(3){animation-delay:1.2s}
+@keyframes fl{to{transform:translateY(-6px);opacity:.8}}
+.fig.red{border:2px solid var(--red);background:color-mix(in srgb,var(--red) 25%,transparent);opacity:1;animation:none}
+.fig.green{border:2px solid var(--ok);background:color-mix(in srgb,var(--ok) 20%,transparent);opacity:1;animation:none}
+.panel{border:1px solid color-mix(in srgb,var(--c) 50%,transparent);background:#0d0d1acc;border-radius:14px;padding:14px;margin-top:12px}
+.msg{margin-top:12px;padding:12px;border-radius:12px;border-left:4px solid var(--c);background:#ffffff0d}
+.msg.bad{border-color:var(--red)}.msg.good{border-color:var(--ok)}
+.mirror{display:flex;gap:8px;justify-content:center;margin:14px 0}
+.doc{width:30%;aspect-ratio:3/4;border:2px solid var(--vio);border-radius:6px;display:grid;place-items:center;font-size:30px;background:#9b5cff22;animation:spin 2s infinite linear alternate}
+@keyframes spin{to{transform:scale(.85) rotate(6deg)}}
+.cracked .doc{border-color:var(--red);animation:shake .15s infinite;filter:contrast(1.5)}
+@keyframes shake{25%{transform:translate(3px,-2px)}75%{transform:translate(-3px,2px)}}
+.siren{animation:sr .5s 4}
+@keyframes sr{50%{background:#ff3d7f55}}
+.cam{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0;filter:hue-rotate(-30deg) saturate(1.3)}
+.st{aspect-ratio:1;border-radius:10px;border:1px solid #38f2a055;background:#38f2a010;font-size:30px;display:grid;place-items:center;cursor:pointer;position:relative;color:var(--ink)}
+.st small{position:absolute;bottom:3px;font-size:10px;color:var(--mute)}
+.st.hit{border:2px solid var(--red);background:#ff3d7f33;box-shadow:0 0 16px var(--red)}
+.st.miss{border:2px dashed var(--red);opacity:.6}
+.timer{font:700 22px ui-monospace,monospace;color:var(--red);text-align:center}
+.ads{display:grid;gap:6px;margin:10px 0}
+.ad{border:1.5px solid var(--red);color:var(--red);padding:8px 10px;border-radius:6px;font:700 13px ui-monospace,monospace;transform:rotate(-.6deg);text-shadow:0 0 8px var(--red)}
+.ad:nth-child(2){transform:rotate(.8deg)}
+.case{display:block;width:100%;text-align:left;padding:12px;margin:6px 0;border-radius:10px;border:1.5px solid var(--mute);background:transparent;color:var(--ink);font:600 15px system-ui;cursor:pointer}
+.case.on{border-color:var(--red);background:#ff3d7f22}
+.glitch{animation:gl .9s}
+@keyframes gl{10%{transform:translate(-8px,2px) skewX(8deg);filter:hue-rotate(90deg)}30%{transform:translate(8px,-3px);clip-path:inset(20% 0 40% 0)}60%{transform:translate(-5px,3px) skewX(-10deg);filter:invert(1)}100%{transform:none}}
+.act{border:2px solid var(--red);padding:14px;border-radius:6px;background:#1a0710;text-align:center;margin-top:12px;font-family:ui-monospace,monospace}
+.act b{color:var(--red)}
+.pass{border:2px solid var(--c);border-radius:16px;padding:18px;margin:14px 0;background:linear-gradient(135deg,#0d0d1a,#14142b);box-shadow:0 0 30px color-mix(in srgb,var(--c) 40%,transparent)}
+.pass.clean{--c:var(--ok)}.pass.dirty{--c:var(--red)}
+.pass .big{font-size:54px;font-weight:800;color:var(--c);text-shadow:0 0 20px var(--c);margin:0}
+.pass ul{padding-left:18px;margin:8px 0}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+#bg{position:fixed;inset:0;z-index:-1;width:100%;height:100%}
+.swipe{min-height:150px;display:grid;place-items:center;text-align:center;padding:18px;border-radius:18px;border:2px solid var(--c);font-size:19px;margin:12px 0;box-shadow:0 0 24px color-mix(in srgb,var(--c) 40%,transparent)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.streak{font:700 14px ui-monospace,monospace;color:var(--ok);text-align:center}
+.rules{margin:10px 0;padding-left:20px;color:var(--mute)}
+.rules b{color:var(--ink)}
+</style></head><body><canvas id="bg"></canvas><div class="wrap">
+<div class="hud"><span>ACADEMIC SINS MUSEUM</span><span>карма: <span class="karma" id="k">100</span></span></div>
+
+<div class="room on" id="r0">
+<h1>Музей Академічних Гріхів</h1>
+<div class="scan" id="scan">Сканування цифрового підпису студента…</div>
+<div class="portal" id="portal"></div>
+<p class="mute">Ласкаво просимо до Архіву Помилок. Кожен експонат тут — це зруйнована кар'єра, анульований диплом або втрачена репутація. Пройди крізь зали і перевір, чи зможе твій код вистояти…</p>
+<button class="btn" id="enter">Влетіти в портал</button>
+</div>
+
+<div class="room" id="r1">
+<h2>👁️ Зала 1. Тіни Плагіату</h2>
+<p class="mute">Тьмяні голограми без автора. Торкнись будь-якої схеми.</p>
+<div class="holo" id="holo"></div>
+<div id="h1ui"></div>
+</div>
+
+<div class="room" id="r2">
+<h2>🌀 Зала 2. Дзеркало Дежавю</h2>
+<p class="mute">Твоє завдання: здати курсову роботу на тему Х. В інвентарі лежить твоя ж стаття за минулий рік на цю тему.</p>
+<div class="mirror" id="mir"><div class="doc">📁</div><div class="doc">📁</div><div class="doc">📁</div></div>
+<div id="h2ui"><button class="btn bad" id="reup">Перезалити стару роботу</button><button class="btn ghost" id="cite">Написати нове й процитувати себе</button></div>
+</div>
+
+<div class="room" id="r3">
+<h2>🤫 Зала 3. Приховані Сигнали</h2>
+<p class="mute">Камера екзаменаційного класу. Знайди 3 порушників за 30 секунд.</p>
+<div class="timer" id="tm">30</div>
+<div class="cam" id="cam"></div>
+<div id="h3ui"><button class="btn" id="go3">Увімкнути тепловізор</button></div>
+</div>
+
+<div class="room" id="r4">
+<h2>🎭 Зала 4. Ярмарок Контрактів</h2>
+<div class="ads"><div class="ad">Диплом під ключ за 200$</div><div class="ad">Складу іспит замість тебе. Дорого. Гарантія</div><div class="ad">Шукаю копію роботи</div></div>
+<p class="mute">Обери угоду.</p>
+<div id="cases"></div>
+<div id="h4ui"></div>
+</div>
+
+<div class="room" id="r5a">
+<h2>🧪 Зала 5. Детектор Фальсифікацій</h2>
+<p class="mute">Швидкі картки: гріх чи чесно? Серія правильних відповідей дає бонус. Помилка коштує 5 карми.</p>
+<div class="streak" id="stk"></div>
+<div class="swipe" id="sw"></div>
+<div class="two"><button class="btn bad" id="sin">Гріх</button><button class="btn ghost" id="fine">Чесно</button></div>
+<div id="h5ui"></div>
+</div>
+
+<div class="room" id="r6a">
+<h2>⚖️ Зала 6. Ситуаційна кімната</h2>
+<p class="mute">Три життєві дилеми: корупція, співавторство, рецензія. Обирай уважно.</p>
+<div id="dil"></div>
+</div>
+
+<div class="room" id="r5">
+<h2>🏁 Термінал Вердикту</h2>
+<div id="verdict"></div>
+</div>
+</div>
+<script>
+const $=s=>document.querySelector(s);
+let karma=100,sins=[],cur=0;
+function show(n){$(".hud span").textContent=n>0&&n<7?"ЗАЛА "+n+" / 6":"ACADEMIC SINS MUSEUM";document.querySelectorAll(".room").forEach((r,i)=>r.classList.toggle("on",i===n));cur=n;window.scrollTo(0,0)}
+function hit(name,pts){sins.push(name);karma=Math.max(0,karma-pts);$("#k").textContent=karma}
+function next(label,n){return `<button class="btn" onclick="show(${n})">${label}</button>`}
+// Entry
+const lines=["Сканування цифрового підпису студента…","Підпис знайдено. Рівень доброчесності: перевіряється…","Вхід до Архіву Помилок відкрито."];
+let li=0;const si=setInterval(()=>{li=Math.min(li+1,2);$("#scan").textContent=lines[li];if(li==2)clearInterval(si)},1400);
+$("#enter").onclick=()=>{$("#portal").classList.add("go");$("#enter").disabled=true;setTimeout(()=>{document.body.classList.add("red");show(1)},1300)};
+// Hall 1
+const figs=[["📊","графік"],["📈","таблиця"],["📄","абзац"]];
+$("#holo").innerHTML=figs.map((f,i)=>`<button class="fig" data-i="${i}" aria-label="${f[1]}">${f[0]}</button>`).join("");
+let h1done=false;
+$("#holo").onclick=e=>{const b=e.target.closest(".fig");if(!b||h1done)return;b.dataset.sel=1;
+$("#h1ui").innerHTML=`<div class="panel">Цей ${figs[b.dataset.i][1]} ідеально підходить для твоєї роботи. Що зробиш?<button class="btn bad" data-a="0">Просто вставлю, я ж її трохи підфарбував</button><button class="btn ghost" data-a="1">Додам тег джерела [Коваленко, 2025]</button></div>`;
+$("#h1ui").onclick=ev=>{const a=ev.target.dataset.a;if(a===undefined||h1done)return;h1done=true;
+if(a==="0"){b.classList.add("red");hit("Плагіат",25);$("#h1ui").innerHTML=`<div class="msg bad"><b>Плагіат!</b> Використання чужих зображень чи таблиць без посилання — це крадіжка інтелектуальної власності.</div>`}
+else{b.classList.add("green");$("#h1ui").innerHTML=`<div class="msg good"><b>Схема стабілізована.</b> Чужа ідея з іменем автора стає фундаментом твоєї роботи.</div>`}
+$("#h1ui").innerHTML+=`<div class="msg">Будь-яка чужа ідея, копія чи навіть перефраз без імені автора — це крадіжка, яка робить твою роботу «пустушкою».</div>`+next("Далі: Дзеркало Дежавю",2)}};
+// Hall 2
+$("#reup").onclick=()=>{$("#mir").classList.add("cracked");document.body.classList.add("siren");hit("Самоплагіат",20);
+$("#h2ui").innerHTML=`<div class="msg bad"><b>Виявлено петлю часу! Самоплагіат.</b> Повторне подання власних раніше опублікованих робіт як нових — це обман системи. Наука має рухатися вперед, а не тупцяти на місці.</div><div class="msg">Якщо використовуєш свої старі дані — цитуй самого себе!</div>`+next("Далі: Приховані Сигнали",3);setTimeout(()=>document.body.classList.remove("siren"),2200)};
+$("#cite").onclick=()=>{$("#h2ui").innerHTML=`<div class="msg good"><b>Петля розірвана.</b> Нова робота з посиланням на власну попередню — це чесний розвиток теми.</div>`+next("Далі: Приховані Сигнали",3)};
+// Hall 3
+const sts=[["🎧","audio",1,"Мікронавушник: стороння допомога."],["🙂","",0],["📱","gadget",1,"Прихований гаджет під столом: заборонені засоби."],["🧑‍🎓","",0],["🤞🤞","signals",1,"Жести пальців: система прихованих сигналів."],["😶","",0]];
+let t3,found=0,run3=false;
+$("#cam").innerHTML=sts.map((s,i)=>`<button class="st" data-i="${i}">${s[1]?"🧑‍🎓":s[0]}<small>місце ${i+1}</small></button>`).join("");
+$("#go3").onclick=()=>{run3=true;found=0;let t=30;$("#go3").remove();$("#tm").textContent=t;
+t3=setInterval(()=>{t--;$("#tm").textContent=t;if(t<=0)end3()},1000)};
+$("#cam").onclick=e=>{const b=e.target.closest(".st");if(!b||!run3||b.classList.contains("hit"))return;const s=sts[b.dataset.i];
+if(s[2]){b.classList.add("hit");b.firstChild.textContent=s[0];found++;$("#h3ui").innerHTML=`<div class="msg bad">${s[3]}</div>`;if(found==3)end3()}
+else{karma=Math.max(0,karma-2);$("#k").textContent=karma;b.style.opacity=.4}};
+function end3(){clearInterval(t3);run3=false;const m=3-found;
+document.querySelectorAll(".st").forEach((b,i)=>{if(sts[i][2]&&!b.classList.contains("hit")){b.classList.add("miss");b.firstChild.textContent=sts[i][0]}});
+if(m>0)hit("Пропущено порушників: "+m,0);
+$("#h3ui").innerHTML=`<div class="msg ${m?'':'good'}">${m?`Знайдено ${found} з 3.`:"Усіх знайдено."} <b>Списування — це не просто шпора.</b> Це використання будь-якої несанкціонованої допомоги, яка нівелює твої реальні знання.</div>`+next("Далі: Ярмарок Контрактів",4)}
+// Hall 4
+const cs=["Купити готову роботу","Попросити друга здати тест під моїм логіном","Здати з одногрупником абсолютно однакові файли"];
+let pick=-1,h4=false;
+$("#cases").innerHTML=cs.map((c,i)=>`<button class="case" data-i="${i}">Кейс ${i+1}: ${c}</button>`).join("");
+$("#h4ui").innerHTML=`<button class="btn bad" id="deal">Укласти угоду</button><button class="btn ghost" id="walk">Піти геть і вчитися самій</button>`;
+$("#cases").onclick=e=>{const b=e.target.closest(".case");if(!b||h4)return;document.querySelectorAll(".case").forEach(x=>x.classList.remove("on"));b.classList.add("on");pick=+b.dataset.i};
+$("#deal").onclick=()=>{if(h4)return;if(pick<0){$("#cases").insertAdjacentHTML("afterend",'<div class="msg">Спершу обери кейс.</div>');return}
+h4=true;hit("Шахрайство",40);const r=$("#r4");r.classList.add("glitch");
+$("#h4ui").innerHTML=`<div class="act"><b>АКТ ПРО ВІДРАХУВАННЯ</b><br>Чорний список репутації<br><br>Це не просто порушення. Це шахрайство та обман, які ставлять під загрозу твій статус студента й руйнують довіру.</div>`+next("Далі: Детектор Фальсифікацій",5)};
+$("#walk").onclick=()=>{if(h4)return;h4=true;$("#h4ui").innerHTML=`<div class="msg good"><b>Угоду відхилено.</b> Власні знання — єдиний актив, який не можна купити і втратити.</div>`+next("Далі: Детектор Фальсифікацій",5)};
+function fin(){const clean=sins.filter(s=>!s.startsWith("Пропущено")).length==0;
+const cnt={};sins.filter(s=>!s.startsWith("Пропущено")).forEach(s=>cnt[s]=(cnt[s]||0)+1);
+$("#verdict").innerHTML=clean?`<div class="pass clean"><p class="big">${karma}%</p><b>Твій код чистий.</b><br>Рівень доброчесності: ${karma}% (Кібер-Академік)</div>`
+:`<div class="pass dirty"><p class="big">${karma}%</p><b>Твоя система заражена.</b><ul>${Object.entries(cnt).map(([k,v])=>`<li>${k} [x${v}]</li>`).join("")}</ul>У реальному житті порушення можуть призвести до наслідків, передбачених законом та положенням закладу освіти, аж до відрахування чи позбавлення результатів.</div>`;
+$("#verdict").innerHTML+=`<button class="btn" id="rs">Перезапустити систему (очистити карму)</button><p class="mute" style="text-align:center">Вчитися чесно ніколи не пізно.</p>`;
+$("#rs").onclick=()=>location.reload();
+$("#verdict").insertAdjacentHTML("beforeend",`<button class="btn ghost" id="sh">Поділитися з друзями</button><h3>Золоті правила</h3><ol class="rules"><li><b>Цитуй.</b> Чужа думка завжди з іменем автора.</li><li><b>Не купуй і не підміняй.</b> Твої знання не можна делегувати.</li><li><b>Не вигадуй.</b> Дані й джерела мають існувати.</li><li><b>Не мовчи про корупцію.</b> Звертайся до відповідальних у закладі.</li><li><b>Питай.</b> Не впевнена в правилах — запитай викладача.</li></ol>`);
+$("#sh").onclick=async()=>{const t="Пройди «Музей Академічних Гріхів» і перевір свою доброчесність! Мій результат: "+karma+"%";try{if(navigator.share)await navigator.share({title:"Музей Академічних Гріхів",text:t,url:location.href});else{await navigator.clipboard.writeText(t+" "+location.href);$("#sh").textContent="Скопійовано!"}}catch(e){}}}
+// Hall 5
+const C=[["Вигадала цифри для опитування, якого не проводила",1,"Фабрикація даних."],["Процитувала статтю з посиланням на автора",0,"Чесне цитування."],["Додала в список літератури книгу, якої не читала",1,"Фальсифікація бібліографії."],["Керівник у співавторах, хоча нічого не робив",1,"Почесне авторство."],["Переказала думку автора своїми словами й вказала його",0,"Чесне перефразування."],["Дала подрузі списати контрольну",1,"Допомога у списуванні теж порушення."],["Використала ШІ за правилами закладу і чесно про це вказала",0,"Прозорість і дотримання правил — це чесно."],["Видалила чужі нотатки, щоб одногрупник не мав переваги",1,"Саботаж."]];
+let ci=0,stk=0,best=0,ok5=0;
+function card(){if(ci>=C.length){$("#sw").textContent="Готово!";$("#sin").disabled=$("#fine").disabled=true;$("#h5ui").insertAdjacentHTML("beforeend",`<div class="msg good">Правильно: ${ok5} з ${C.length}. Найдовша серія: ${best}.</div><button class="btn" onclick="show(6)">Далі: Ситуаційна кімната</button>`);return}$("#sw").textContent=C[ci][0];$("#stk").textContent="Картка "+(ci+1)+"/"+C.length+(stk>1?"  серія x"+stk+" 🔥":"")}
+function ans(v){if(ci>=C.length)return;const c=C[ci],ok=v==c[1];if(ok){stk++;ok5++;best=Math.max(best,stk);beep(700,.12)}else{stk=0;karma=Math.max(0,karma-5);$("#k").textContent=karma;beep(150,.3);navigator.vibrate&&navigator.vibrate(60)}$("#h5ui").innerHTML=`<div class="msg ${ok?'good':'bad'}"><b>${ok?"Вірно.":"Ні."}</b> ${c[2]}</div>`;ci++;card()}
+$("#sin").onclick=()=>ans(1);$("#fine").onclick=()=>ans(0);card();
+// Hall 6
+const D=[["Викладач натякає: «Подарунок — і залік у кишені».",[["Принести подарунок",0,"Академічна корупція."],["Відмовитися й повідомити відповідальних за доброчесність",2,"Саме так. Корупція живе, поки мовчать."],["Мовчки піти й пересдати",1,"Чесно, але проблема лишається."]]],["Одногрупник не зробив свою частину, а презентація завтра.",[["Вписати його в автори, нічого не кажучи",0,"Почесне авторство."],["Чесно вказати внесок кожного",2,"Авторство має відповідати внеску."],["Зробити за нього й промовчати",1,"Вчинок добрий, але вказати внесок треба."]]],["Друг просить відрецензувати його роботу, а часу немає.",[["Написати схвальний відгук, не читаючи",0,"Рецензія без експертизи."],["Прочитати й дати чесну оцінку",2,"Експертиза — суть рецензії."],["Відмовитися через брак часу",1,"Чесно: краще ніяк, ніж неправдиво."]]]];
+let di=0;
+function dil(){if(di>=D.length){$("#dil").innerHTML=`<div class="msg good">Дилеми пройдено.</div><button class="btn" onclick="fin();show(7)">До Термінала Вердикту</button>`;return}const d=D[di];$("#dil").innerHTML=`<div class="panel"><b>Дилема ${di+1}/3.</b> ${d[0]}${d[1].map((o,i)=>`<button class="case" data-i="${i}">${o[0]}</button>`).join("")}</div>`;$("#dil").onclick=e=>{const b=e.target.closest(".case");if(!b)return;const o=D[di][1][b.dataset.i];$("#dil").onclick=null;if(o[1]==0){hit(o[2].replace(".",""),15)}else if(o[1]==2){karma=Math.min(100,karma+5);$("#k").textContent=karma}$("#dil").innerHTML=`<div class="msg ${o[1]==0?'bad':'good'}"><b>${o[1]==0?"Гріх.":o[1]==2?"Чудово.":"Нормально."}</b> ${o[2]}</div><button class="btn" id="dn">Далі</button>`;$("#dn").onclick=()=>{di++;dil()}}}
+dil();
+// Sound, haptics
+function beep(f,d){try{const a=window._a||(window._a=new AudioContext());const o=a.createOscillator(),g=a.createGain();o.frequency.value=f;g.gain.value=.04;o.connect(g);g.connect(a.destination);o.start();o.stop(a.currentTime+d)}catch(e){}}
+addEventListener("click",e=>{if(e.target.closest("button"))beep(520,.05)});
+const h0=hit;hit=(a,b)=>{h0(a,b);beep(150,.3);navigator.vibrate&&navigator.vibrate(60)};
+// Starfield
+const cv=$("#bg"),cx=cv.getContext("2d");let S=[];
+function rs(){cv.width=innerWidth;cv.height=innerHeight;S=Array.from({length:70},()=>({x:Math.random()*cv.width,y:Math.random()*cv.height,z:Math.random()*2+.3}))}
+rs();addEventListener("resize",rs);
+if(!matchMedia("(prefers-reduced-motion:reduce)").matches)(function d(){cx.clearRect(0,0,cv.width,cv.height);cx.fillStyle=getComputedStyle(document.body).getPropertyValue("--c").trim()||"#3ec5ff";S.forEach(s=>{s.y+=s.z*.4;if(s.y>cv.height)s.y=0;cx.globalAlpha=.25+s.z*.2;cx.fillRect(s.x,s.y,s.z,s.z)});requestAnimationFrame(d)})();
+</script></body></html>
